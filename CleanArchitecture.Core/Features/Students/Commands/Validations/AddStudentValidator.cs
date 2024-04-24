@@ -10,14 +10,18 @@ namespace CleanArchitecture.Core.Features.Students.Commands.Validations
     {
         #region Fields
         private readonly IStudentService _studentService;
+        private readonly IDepartmentService _departmentService;
         private readonly IStringLocalizer<SharedResources> _localizer;
 
         #endregion
 
         #region Ctor
-        public AddStudentValidator(IStudentService studentService, IStringLocalizer<SharedResources> localizer)
+        public AddStudentValidator(IStudentService studentService,
+                                    IDepartmentService departmentService,
+            IStringLocalizer<SharedResources> localizer)
         {
             _studentService = studentService;
+            _departmentService = departmentService;
             _localizer = localizer;
             ApplyValidationRules();
             ApplyCustomValidationRules();
@@ -36,6 +40,7 @@ namespace CleanArchitecture.Core.Features.Students.Commands.Validations
                 .NotEmpty().WithMessage(_localizer[SharedResourcesKeys.NotEmpty])
                 .NotNull().WithMessage(_localizer[SharedResourcesKeys.Required])
                 .MaximumLength(100).WithMessage(_localizer[SharedResourcesKeys.MaxLengthis100]);
+
         }
 
         private void ApplyCustomValidationRules()
@@ -43,6 +48,14 @@ namespace CleanArchitecture.Core.Features.Students.Commands.Validations
             RuleFor(x => x.NameAr)
                 .MustAsync(async (Key, CancellationToken) => !await _studentService.IsNameExist(Key))
                 .WithMessage("Name is already exist");
+
+            When(x => x.DepartmentID != null, () =>
+            {
+                RuleFor(x => x.DepartmentID)
+                .MustAsync(async (Key, CancellationToken) => await _departmentService.IsDepartmentExist(Key))
+                .WithMessage(_localizer[SharedResourcesKeys.IsNotExist]);
+            });
+
         }
         #endregion
     }

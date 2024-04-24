@@ -8,7 +8,6 @@ using CleanArchitecture.Data.Entities;
 using CleanArchitecture.Service.Abstracts;
 using MediatR;
 using Microsoft.Extensions.Localization;
-using System.Linq.Expressions;
 
 namespace CleanArchitecture.Core.Features.Students.Queries.Handlers
 {
@@ -56,10 +55,10 @@ namespace CleanArchitecture.Core.Features.Students.Queries.Handlers
 
         public async Task<PaginatedResult<GetStudentPaginatedListResponse>> Handle(GetStudentPaginatedListQuery request, CancellationToken cancellationToken)
         {
-            Expression<Func<Student, GetStudentPaginatedListResponse>> expression
-                        = e => new GetStudentPaginatedListResponse(e.StudentID, e.Localize(e.NameAr, e.NameEn), e.Address, e.Department.Localize(e.Department.DNameAr, e.Department.DNameEn));
+            //Expression<Func<Student, GetStudentPaginatedListResponse>> expression
+            //            = e => new GetStudentPaginatedListResponse(e.StudentID, e.Localize(e.NameAr, e.NameEn), e.Address, e.Department.Localize(e.Department.DNameAr, e.Department.DNameEn));
             var filter = _studentService.FilterStudentPaginatedQueryable(request.OrderBy, request.Search);
-            var paginatedList = filter.Select(expression).ToPaginatedListAsync((int)request.PageNumber, (int)request.PageSize).Result;
+            var paginatedList = _mapper.ProjectTo<GetStudentPaginatedListResponse>(filter, null).ToPaginatedListAsync((int)request.PageNumber, (int)request.PageSize).Result;
             paginatedList.Meta = new { Count = paginatedList.Data.Count() };
             return paginatedList;
         }

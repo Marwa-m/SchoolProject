@@ -144,6 +144,9 @@
   <data name="DepartmementId" xml:space="preserve">
     <value>Department id</value>
   </data>
+  <data name="DepartmementIdNotExist" xml:space="preserve">
+    <value>Department Id is Not exist</value>
+  </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
   </data>

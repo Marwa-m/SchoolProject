@@ -11,6 +11,7 @@ namespace CleanArchitecture.Core.Mapping.StudentMapping
             AddStudentCommandMapping();
             EditStudentCommandMapping();
             DeleteStudentCommandMapping();
+            GetStudentPaginationMapping();
         }
     }
 }

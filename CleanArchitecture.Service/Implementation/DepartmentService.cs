@@ -29,6 +29,11 @@ namespace CleanArchitecture.Service.Implementation
 
             return department;
         }
+
+        public async Task<bool> IsDepartmentExist(int Id)
+        {
+            return await _departmentRepository.GetTableNoTracking().AnyAsync(x => x.DID.Equals(Id));
+        }
         #endregion
 
     }
