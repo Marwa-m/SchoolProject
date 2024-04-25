@@ -1,10 +1,8 @@
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.MiddleWare;
 using CleanArchitecture.Infrastructure;
-using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Service;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Globalization;
 
@@ -17,17 +15,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Connection
-builder.Services.AddDbContext<ApplicationDBContext>(option =>
-{
-    option.UseSqlServer(builder.Configuration.GetConnectionString("dbcontext"));
-});
 
 #region Dependency injection
 //Dependency injection
 builder.Services.AddInfrastructureDependencies()
                 .AddServiceDependencies()
-                .AddCoreDependencies();
+                .AddCoreDependencies()
+                .AddServiceRegistration(builder.Configuration);
 #endregion
 
 #region Localization
