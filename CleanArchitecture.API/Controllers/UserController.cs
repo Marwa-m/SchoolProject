@@ -21,6 +21,12 @@ namespace CleanArchitecture.API.Controllers
             var response = await _mediator.Send(command);
             return NewResult(response);
         }
+        [HttpPost(LocalRouter.UserRouting.Edit)]
+        public async Task<IActionResult> Edit([FromBody] UpdateUserCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return NewResult(response);
+        }
 
         [HttpGet(LocalRouter.UserRouting.PaginatedList)]
         public async Task<IActionResult> GetUserPaginatedList([FromQuery] GetUserPaginationQuery query)
