@@ -26,5 +26,19 @@
 
             public const string GetByID = $"{Prefix}/Id";
         }
+
+        public static class UserRouting
+        {
+            public const string Prefix = $"{Rule}/User";
+            public const string List = $"{Prefix}/List";
+            public const string PaginatedList = $"{Prefix}/PaginatedList";
+
+
+            public const string GetByID = $"{Prefix}/{{Id}}";
+            public const string Create = $"{Prefix}/Create";
+            public const string Edit = $"{Prefix}/Edit";
+            public const string Delete = $"{Prefix}/Delete/{{Id}}";
+
+        }
     }
 }
