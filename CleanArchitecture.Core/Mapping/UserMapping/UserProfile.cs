@@ -9,6 +9,7 @@ namespace CleanArchitecture.Core.Mapping.UserMapping
             AddUserCommandMapping();
             GetUserPaginationMapping();
             GetUserByIdMapping();
+            UpdateUserCommandMapping();
         }
     }
 }

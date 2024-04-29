@@ -10,7 +10,8 @@ using Microsoft.Extensions.Localization;
 namespace CleanArchitecture.Core.Features.Users.Commands.Handlers
 {
     public class UserCommandHandler : ResponseHandler,
-                                    IRequestHandler<AddUserCommand, Response<string>>
+                                    IRequestHandler<AddUserCommand, Response<string>>,
+        IRequestHandler<UpdateUserCommand, Response<string>>
     {
         #region Fields
         private readonly IStringLocalizer<SharedResources> _stringLocalizer;
@@ -47,6 +48,20 @@ namespace CleanArchitecture.Core.Features.Users.Commands.Handlers
                 return BadRequest<string>(createResult.Errors.FirstOrDefault().Description);
             }
             return Created("");
+        }
+
+        public async Task<Response<string>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        {
+            var userExist = await _userManager.FindByIdAsync(request.Id);
+            if (userExist == null)
+                return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.NotFound]);
+            var mapperUser = _mapper.Map(request, userExist);
+
+            var resultMessage = await _userManager.UpdateAsync(mapperUser);
+            if (!resultMessage.Succeeded)
+                return BadRequest<string>(resultMessage.Errors.FirstOrDefault().Description);
+            else
+                return Success("");
         }
 
         #endregion
