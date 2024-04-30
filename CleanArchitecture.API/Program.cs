@@ -79,6 +79,8 @@ app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseCors(CORS);
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

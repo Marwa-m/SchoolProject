@@ -39,7 +39,13 @@
             public const string Edit = $"{Prefix}/Edit";
             public const string Delete = $"{Prefix}/Delete/{{Id}}";
             public const string ChangePassword = $"{Prefix}/ChangePassword";
+        }
 
+        //Authentication
+        public static class Authentication
+        {
+            public const string Prefix = $"{Rule}/Authentication";
+            public const string SignIn = $"{Prefix}/SignIn";
         }
     }
 }
