@@ -3,12 +3,14 @@ using CleanArchitecture.Core.Features.Students.Commands.Models;
 using CleanArchitecture.Core.Features.Students.Queries.Models;
 using CleanArchitecture.Data.AppMetaData;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.API.Controllers
 {
-    // [Route("api/[controller]")]
+
     [ApiController]
+    [Authorize]
     public class StudentController : AppControllerBase
     {
         public StudentController(IMediator mediator) : base(mediator)
