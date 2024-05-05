@@ -26,6 +26,8 @@ namespace CleanArchitecture.Infrastructure.Data
         public DbSet<DepartmentSubject> DepartmentSubjects { get; set; }
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<Ins_Subject> Ins_Subjects { get; set; }
+        public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
