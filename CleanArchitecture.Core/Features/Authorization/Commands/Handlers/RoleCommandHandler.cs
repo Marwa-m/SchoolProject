@@ -9,7 +9,8 @@ namespace CleanArchitecture.Core.Features.Authorization.Commands.Handlers
 {
     public class RoleCommandHandler : ResponseHandler,
         IRequestHandler<AddRoleCommand, Response<string>>,
-        IRequestHandler<EditRoleCommand, Response<string>>
+        IRequestHandler<EditRoleCommand, Response<string>>,
+        IRequestHandler<DeleteRoleCommand, Response<string>>
 
     {
 
@@ -46,6 +47,16 @@ namespace CleanArchitecture.Core.Features.Authorization.Commands.Handlers
         public async Task<Response<string>> Handle(EditRoleCommand request, CancellationToken cancellationToken)
         {
             var result = await _authorizationService.EditRoleAsync(request);
+            if (result == "Succeeded")
+            {
+                return Success(result);
+            }
+            return BadRequest<string>(result);
+        }
+
+        public async Task<Response<string>> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
+        {
+            var result = await _authorizationService.DeleteRoleAsync(request.Id);
             if (result == "Succeeded")
             {
                 return Success(result);
