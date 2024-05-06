@@ -3,6 +3,7 @@ using CleanArchitecture.Core.Features.Authorization.Commands.Models;
 using CleanArchitecture.Core.Features.Authorization.Queries.Models;
 using CleanArchitecture.Data.AppMetaData;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.API.Controllers
