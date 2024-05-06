@@ -49,6 +49,15 @@
             public const string RefreshToken = $"{Prefix}/RefreshToken";
             public const string ValidateToken = $"{Prefix}/ValidateToken";
 
+        }
+
+        //Authorization
+        public static class Authorization
+        {
+            public const string Prefix = $"{Rule}/Authorization";
+            public const string Create = $"{Prefix}/Role/Create";
+            public const string Edit = $"{Prefix}/Role/Edit";
+
             //ValidateToken
         }
     }

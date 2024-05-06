@@ -37,9 +37,6 @@ namespace CleanArchitecture.Core.Features.Authentication.Commands.Validations
 
         private void ApplyCustomValidationRules()
         {
-            //RuleFor(x => x.NameAr)
-            //    .MustAsync(async (Key, CancellationToken) => !await _studentService.IsNameExist(Key))
-            //    .WithMessage("Name is already exist");
 
             //When(x => x.DepartmentID != null, () =>
             //{

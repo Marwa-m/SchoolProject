@@ -1,7 +1,10 @@
 using CleanArchitecture.Core;
 using CleanArchitecture.Core.MiddleWare;
+using CleanArchitecture.Data.Entities.Identity;
 using CleanArchitecture.Infrastructure;
+using CleanArchitecture.Infrastructure.Seeder;
 using CleanArchitecture.Service;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using System.Globalization;
@@ -63,7 +66,13 @@ builder.Services.AddCors(option =>
 });
 #endregion
 var app = builder.Build();
-
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+    await RoleSeeder.SeedAsync(roleManager);
+    await UserSeeder.SeedAsync(userManager);
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
