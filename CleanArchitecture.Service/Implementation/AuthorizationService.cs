@@ -59,6 +59,23 @@ namespace CleanArchitecture.Service.Implementation
             else return result.Errors.FirstOrDefault().Description;
         }
 
+        public async Task<string> DeleteRoleAsync(int id)
+        {
+            var role = await _roleManager.FindByIdAsync(id.ToString());
+            if (role == null)
+            {
+                return "NotFound";
+            }
+            var users = await _userManager.GetUsersInRoleAsync(role.Name);
+            if (users != null && users.Count > 0) return "This role is used";
+            var result = await _roleManager.DeleteAsync(role);
+            if (result.Succeeded)
+            {
+                return "Succeeded";
+            }
+            else return result.Errors.FirstOrDefault().Description;
+        }
+
         public async Task<string> EditRoleAsync(EditRoleRequest request)
         {
             var role = await _roleManager.FindByIdAsync(request.Id.ToString());
