@@ -23,7 +23,7 @@ namespace CleanArchitecture.Infrastructure
             option.UseSqlServer(configuration.GetConnectionString("dbcontext"));
         });
 
-            services.AddIdentity<User, IdentityRole<int>>(option =>
+            services.AddIdentity<User, Role>(option =>
             {
                 // Password settings.
                 option.Password.RequireDigit = true;

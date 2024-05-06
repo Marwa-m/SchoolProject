@@ -49,6 +49,16 @@ namespace CleanArchitecture.Core.Features.Users.Commands.Handlers
             {
                 return BadRequest<string>(createResult.Errors.FirstOrDefault().Description);
             }
+            if (_userManager.Users.Count() == 1)
+            {
+                await _userManager.AddToRoleAsync(identityUser, "Admin");
+
+            }
+            else
+            {
+                await _userManager.AddToRoleAsync(identityUser, "User");
+
+            }
             return Created("");
         }
 

@@ -36,14 +36,23 @@ namespace CleanArchitecture.Service.Implementation
         }
         #endregion
         #region Local Method
-        private static List<Claim> GetClaims(User user)
+        private static List<Claim> GetClaims(User user, List<string> roles)
         {
-            return new List<Claim>() {
+            var claims = new List<Claim>() {
+                new Claim(ClaimTypes.Role,"Admin"),
+                new Claim(ClaimTypes.NameIdentifier,user.UserName),
+            new Claim(ClaimTypes.Email, user.Email),
             new Claim(nameof(UserClaimsModel.Id), user.Id.ToString()),
-            new Claim(nameof(UserClaimsModel.UserName), user.UserName),
-            new Claim(nameof(UserClaimsModel.Email), user.Email),
-            new Claim(nameof(UserClaimsModel.PhoneNumber), user.PhoneNumber),
+            //new Claim(nameof(UserClaimsModel.Email), user.Email),
+            //new Claim(nameof(UserClaimsModel.PhoneNumber), user.PhoneNumber),
             };
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            return claims;
         }
         public RefreshToken GetRefreshToken(User user)
         {
@@ -64,10 +73,10 @@ namespace CleanArchitecture.Service.Implementation
             randomNumberGenerate.GetBytes(randomNumber);
             return Convert.ToBase64String(randomNumber);
         }
-        private (JwtSecurityToken, string) GenerateJWToken(User user)
+        private async Task<(JwtSecurityToken, string)> GenerateJWToken(User user)
         {
-
-            List<Claim> claims = GetClaims(user);
+            var roles = await _userManager.GetRolesAsync(user);
+            List<Claim> claims = GetClaims(user, roles.ToList());
 
             var jwtToken = new JwtSecurityToken(
                 _jwtSettings.Issuer,
@@ -97,7 +106,7 @@ namespace CleanArchitecture.Service.Implementation
         }
         public async Task<JwtAuthResult> GetGWTToken(User user)
         {
-            (JwtSecurityToken jwtToken, string accessToken) = GenerateJWToken(user);
+            (JwtSecurityToken jwtToken, string accessToken) = await GenerateJWToken(user);
             RefreshToken refreshToken = GetRefreshToken(user);
             var userRefreshToken = new UserRefreshToken
             {
@@ -127,7 +136,7 @@ namespace CleanArchitecture.Service.Implementation
         {
 
 
-            var (jwtSecurityToken, newToken) = GenerateJWToken(user);
+            var (jwtSecurityToken, newToken) = await GenerateJWToken(user);
 
             var response = new JwtAuthResult
             {
