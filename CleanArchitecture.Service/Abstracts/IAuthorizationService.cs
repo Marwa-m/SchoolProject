@@ -17,5 +17,9 @@ namespace CleanArchitecture.Service.Abstracts
         public Task<bool> IsRoleExist(string roleName);
         public Task<bool> IsRoleExistById(int id);
 
+        public Task<ManageUserRolesResult> GetUserRoles(User user);
+
+        public Task<string> UpdateUserRoles(UpdateUserRoleRequest request);
+
     }
 }

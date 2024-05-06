@@ -3,7 +3,6 @@ using CleanArchitecture.Core.Features.Authorization.Commands.Models;
 using CleanArchitecture.Core.Features.Authorization.Queries.Models;
 using CleanArchitecture.Data.AppMetaData;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.API.Controllers
@@ -45,9 +44,23 @@ namespace CleanArchitecture.API.Controllers
         }
 
         [HttpGet(LocalRouter.Authorization.GetByID)]
-        public async Task<IActionResult> GetStudentById([FromRoute] int Id)
+        public async Task<IActionResult> GetRoleById([FromRoute] int Id)
         {
             var response = await _mediator.Send(new GetRoleByIdQuery(Id));
+            return NewResult(response);
+        }
+
+        [HttpGet(LocalRouter.Authorization.ManageUserRoles)]
+        public async Task<IActionResult> ManageUserRoles([FromRoute] int userId)
+        {
+            var response = await _mediator.Send(new ManageUserRolesQuery() { UserId = userId });
+            return NewResult(response);
+        }
+
+        [HttpPut(LocalRouter.Authorization.UpdateUserRoles)]
+        public async Task<IActionResult> UpdateUserRoles([FromBody] UpdateUserRolesCommand request)
+        {
+            var response = await _mediator.Send(request);
             return NewResult(response);
         }
     }

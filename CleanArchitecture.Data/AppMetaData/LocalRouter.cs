@@ -60,7 +60,10 @@
             public const string Delete = $"{Prefix}/Role/Delete/{{Id}}";
             public const string List = $"{Prefix}/List";
             public const string GetByID = $"{Prefix}/{{Id}}";
+            public const string ManageUserRoles = $"{Prefix}/ManageUserRoles/{{userId}}";
+            public const string UpdateUserRoles = $"{Prefix}/UpdateUserRoles";
 
+            //
 
             //ValidateToken
         }
