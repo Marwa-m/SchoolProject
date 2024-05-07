@@ -37,8 +37,9 @@ namespace CleanArchitecture.Service.Implementation
         }
         #endregion
         #region Local Method
-        private static List<Claim> GetClaims(User user, List<string> roles)
+        private async Task<List<Claim>> GetClaims(User user)
         {
+            var roles = await _userManager.GetRolesAsync(user);
             var claims = new List<Claim>() {
                 new Claim(ClaimTypes.Role,"Admin"),
                 new Claim(ClaimTypes.NameIdentifier,user.UserName),
@@ -52,6 +53,9 @@ namespace CleanArchitecture.Service.Implementation
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
+            var userClaims = await _userManager.GetClaimsAsync(user);
+
+            claims.AddRange(userClaims);
 
             return claims;
         }
@@ -76,8 +80,7 @@ namespace CleanArchitecture.Service.Implementation
         }
         private async Task<(JwtSecurityToken, string)> GenerateJWToken(User user)
         {
-            var roles = await _userManager.GetRolesAsync(user);
-            List<Claim> claims = GetClaims(user, roles.ToList());
+            List<Claim> claims = await GetClaims(user);
 
             var jwtToken = new JwtSecurityToken(
                 _jwtSettings.Issuer,
