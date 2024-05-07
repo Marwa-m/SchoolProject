@@ -65,6 +65,7 @@ namespace CleanArchitecture.Service.Implementation
 
 
 
+
         public async Task<string> EditRoleAsync(EditRoleRequest request)
         {
             var role = await _roleManager.FindByIdAsync(request.Id.ToString());
@@ -90,6 +91,30 @@ namespace CleanArchitecture.Service.Implementation
         {
             return await _roleManager.Roles.ToListAsync();
 
+        }
+
+        public async Task<ManageUserRolesResult> GetUserRoles(User user)
+        {
+            var response = new ManageUserRolesResult();
+            response.UserId = user.Id;
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var roles = await _roleManager.Roles.ToListAsync();
+            foreach (var role in roles)
+            {
+                Roles roles1 = new Roles
+                {
+                    Name = role.Name,
+                    Id = role.Id
+                };
+                if (userRoles.Contains(role.Name))
+                {
+                    roles1.HasRole = true;
+                }
+                response.Roles.Add(roles1);
+            }
+
+            return response;
         }
 
         public async Task<ManageUserRolesResult> GetUserRoles(User user)
