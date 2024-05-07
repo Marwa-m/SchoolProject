@@ -10,7 +10,7 @@ namespace CleanArchitecture.API.Controllers
 {
 
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class StudentController : AppControllerBase
     {
         public StudentController(IMediator mediator) : base(mediator)
@@ -34,21 +34,21 @@ namespace CleanArchitecture.API.Controllers
             var response = await _mediator.Send(new GetStudentByIdQuery(Id));
             return NewResult(response);
         }
-
+        [Authorize(Policy = "CreateStudent")]
         [HttpPost(LocalRouter.StudentRouting.Create)]
         public async Task<IActionResult> Create([FromBody] AddStudentCommand command)
         {
             var response = await _mediator.Send(command);
             return NewResult(response);
         }
-
+        [Authorize(Policy = "EditStudent")]
         [HttpPut(LocalRouter.StudentRouting.Edit)]
         public async Task<IActionResult> Edit([FromBody] EditStudentCommand command)
         {
             var response = await _mediator.Send(command);
             return NewResult(response);
         }
-
+        [Authorize(Policy = "DeleteStudent")]
         [HttpDelete(LocalRouter.StudentRouting.Delete)]
         public async Task<IActionResult> Delete([FromRoute] int Id)
         {
