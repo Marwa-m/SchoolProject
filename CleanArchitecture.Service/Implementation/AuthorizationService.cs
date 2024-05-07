@@ -117,29 +117,7 @@ namespace CleanArchitecture.Service.Implementation
             return response;
         }
 
-        public async Task<ManageUserRolesResult> GetUserRoles(User user)
-        {
-            var response = new ManageUserRolesResult();
-            response.UserId = user.Id;
 
-            var roles = await _roleManager.Roles.ToListAsync();
-            foreach (var role in roles)
-            {
-                Roles roles1 = new Roles
-                {
-                    Name = role.Name,
-                    Id = role.Id
-                };
-                var isUserHaveRole = await _userManager.IsInRoleAsync(user, role.Name);
-                if (isUserHaveRole)
-                {
-                    roles1.HasRole = true;
-                }
-                response.Roles.Add(roles1);
-            }
-
-            return response;
-        }
 
 
         public async Task<bool> IsRoleExist(string roleName)
