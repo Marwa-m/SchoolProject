@@ -119,6 +119,7 @@ namespace CleanArchitecture.Service.Implementation
 
 
 
+
         public async Task<bool> IsRoleExist(string roleName)
         {
             return await _roleManager.RoleExistsAsync(roleName);
