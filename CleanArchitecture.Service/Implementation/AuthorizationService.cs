@@ -63,6 +63,23 @@ namespace CleanArchitecture.Service.Implementation
             else return result.Errors.FirstOrDefault().Description;
         }
 
+        public async Task<string> DeleteRoleAsync(int id)
+        {
+            var role = await _roleManager.FindByIdAsync(id.ToString());
+            if (role == null)
+            {
+                return "NotFound";
+            }
+            var users = await _userManager.GetUsersInRoleAsync(role.Name);
+            if (users != null && users.Count > 0) return "This role is used";
+            var result = await _roleManager.DeleteAsync(role);
+            if (result.Succeeded)
+            {
+                return "Succeeded";
+            }
+            else return result.Errors.FirstOrDefault().Description;
+        }
+
 
         public async Task<string> EditRoleAsync(EditRoleRequest request)
         {
@@ -89,6 +106,30 @@ namespace CleanArchitecture.Service.Implementation
         {
             return await _roleManager.Roles.ToListAsync();
 
+        }
+
+        public async Task<ManageUserRolesResult> GetUserRoles(User user)
+        {
+            var response = new ManageUserRolesResult();
+            response.UserId = user.Id;
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+            var roles = await _roleManager.Roles.ToListAsync();
+            foreach (var role in roles)
+            {
+                Roles roles1 = new Roles
+                {
+                    Name = role.Name,
+                    Id = role.Id
+                };
+                if (userRoles.Contains(role.Name))
+                {
+                    roles1.HasRole = true;
+                }
+                response.Roles.Add(roles1);
+            }
+
+            return response;
         }
 
         public async Task<ManageUserRolesResult> GetUserRoles(User user)

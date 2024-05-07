@@ -4,6 +4,7 @@ using CleanArchitecture.Core.Features.Authorization.Commands.Models;
 using CleanArchitecture.Core.Features.Authorization.Queries.Models;
 using CleanArchitecture.Core.Features.Authorization.Queries.Results;
 using CleanArchitecture.Core.Resources;
+using CleanArchitecture.Data.DTOs;
 using CleanArchitecture.Data.Entities.Identity;
 using CleanArchitecture.Data.Results;
 using CleanArchitecture.Service.Abstracts;
