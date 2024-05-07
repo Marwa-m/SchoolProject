@@ -55,13 +55,18 @@
         public static class Authorization
         {
             public const string Prefix = $"{Rule}/Authorization";
-            public const string Create = $"{Prefix}/Role/Create";
-            public const string Edit = $"{Prefix}/Role/Edit";
-            public const string Delete = $"{Prefix}/Role/Delete/{{Id}}";
-            public const string List = $"{Prefix}/List";
-            public const string GetByID = $"{Prefix}/{{Id}}";
-            public const string ManageUserRoles = $"{Prefix}/ManageUserRoles/{{userId}}";
-            public const string UpdateUserRoles = $"{Prefix}/UpdateUserRoles";
+            public const string Roles = Prefix + "/Role";
+            public const string Claims = Prefix + "/Claim";
+            public const string Create = $"{Roles}/Role/Create";
+            public const string Edit = $"{Roles}/Role/Edit";
+            public const string Delete = $"{Roles}/Role/Delete/{{Id}}";
+            public const string List = $"{Roles}/List";
+            public const string GetByID = $"{Roles}/{{Id}}";
+            public const string ManageUserRoles = $"{Roles}/ManageUserRoles/{{userId}}";
+            public const string UpdateUserRoles = $"{Roles}/UpdateUserRoles";
+            public const string ManageUserCalims = $"{Claims}/ManageUserCalims/{{userId}}";
+            public const string UpdateUserClaims = $"{Claims}/UpdateUserClaims";
+
 
             //
 

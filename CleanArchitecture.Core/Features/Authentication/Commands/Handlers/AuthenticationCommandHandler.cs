@@ -2,7 +2,7 @@
 using CleanArchitecture.Core.Features.Authentication.Commands.Models;
 using CleanArchitecture.Core.Resources;
 using CleanArchitecture.Data.Entities.Identity;
-using CleanArchitecture.Data.Helper;
+using CleanArchitecture.Data.Results;
 using CleanArchitecture.Service.Abstracts;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

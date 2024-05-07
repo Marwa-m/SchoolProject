@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Data.Helper
+﻿namespace CleanArchitecture.Data.Results
 {
     public class JwtAuthResult
     {

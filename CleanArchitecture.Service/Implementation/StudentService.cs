@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.Data.Entities;
-using CleanArchitecture.Data.Helper;
+using CleanArchitecture.Data.Enums;
 using CleanArchitecture.Infrastructure.Abstracts;
 using CleanArchitecture.Service.Abstracts;
 using Microsoft.EntityFrameworkCore;

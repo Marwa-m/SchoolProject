@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.Data.Entities.Identity;
-using CleanArchitecture.Data.Helper;
+using CleanArchitecture.Data.Results;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace CleanArchitecture.Service.Abstracts
