@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Data.Helper
+﻿namespace CleanArchitecture.Data.Enums
 {
     public enum StudentOrderEnum
     {

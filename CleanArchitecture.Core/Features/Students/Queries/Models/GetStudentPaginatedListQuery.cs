@@ -1,6 +1,6 @@
 ﻿using CleanArchitecture.Core.Features.Students.Queries.Results;
 using CleanArchitecture.Core.Wrapper;
-using CleanArchitecture.Data.Helper;
+using CleanArchitecture.Data.Enums;
 using MediatR;
 
 namespace CleanArchitecture.Core.Features.Students.Queries.Models;

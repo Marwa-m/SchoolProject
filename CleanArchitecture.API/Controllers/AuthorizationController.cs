@@ -63,5 +63,22 @@ namespace CleanArchitecture.API.Controllers
             var response = await _mediator.Send(request);
             return NewResult(response);
         }
+
+        #region claims
+        [HttpGet(LocalRouter.Authorization.ManageUserCalims)]
+        public async Task<IActionResult> ManageUserClaims([FromRoute] int userId)
+        {
+            var response = await _mediator.Send(new ManageUserClaimsQuery() { UserId = userId });
+            return NewResult(response);
+        }
+
+        [HttpPut(LocalRouter.Authorization.UpdateUserClaims)]
+        public async Task<IActionResult> UpdateUserClaims([FromBody] UpdateUserClaimsCommand request)
+        {
+            var response = await _mediator.Send(request);
+            return NewResult(response);
+        }
+        #endregion
+
     }
 }

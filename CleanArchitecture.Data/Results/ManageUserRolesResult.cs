@@ -1,4 +1,4 @@
-﻿namespace CleanArchitecture.Data.DTOs
+﻿namespace CleanArchitecture.Data.Results
 {
     public class ManageUserRolesResult
     {

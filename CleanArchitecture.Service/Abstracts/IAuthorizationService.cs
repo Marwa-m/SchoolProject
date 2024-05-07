@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Data.DTOs;
 using CleanArchitecture.Data.Entities.Identity;
+using CleanArchitecture.Data.Results;
 
 namespace CleanArchitecture.Service.Abstracts
 {
@@ -20,6 +21,11 @@ namespace CleanArchitecture.Service.Abstracts
         public Task<ManageUserRolesResult> GetUserRoles(User user);
 
         public Task<string> UpdateUserRoles(UpdateUserRoleRequest request);
+
+
+        public Task<ManageUserClaimsResult> GetUserClaims(User user);
+        public Task<string> UpdateUserClaims(UpdateUserClaimRequest request);
+
 
     }
 }

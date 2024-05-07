@@ -1,9 +1,13 @@
 ﻿using CleanArchitecture.Data.DTOs;
 using CleanArchitecture.Data.Entities.Identity;
+using CleanArchitecture.Data.Helper;
+using CleanArchitecture.Data.Results;
 using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Service.Abstracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using static CleanArchitecture.Data.Results.ManageUserClaimsResult;
 
 namespace CleanArchitecture.Service.Implementation
 {
@@ -59,22 +63,6 @@ namespace CleanArchitecture.Service.Implementation
             else return result.Errors.FirstOrDefault().Description;
         }
 
-        public async Task<string> DeleteRoleAsync(int id)
-        {
-            var role = await _roleManager.FindByIdAsync(id.ToString());
-            if (role == null)
-            {
-                return "NotFound";
-            }
-            var users = await _userManager.GetUsersInRoleAsync(role.Name);
-            if (users != null && users.Count > 0) return "This role is used";
-            var result = await _roleManager.DeleteAsync(role);
-            if (result.Succeeded)
-            {
-                return "Succeeded";
-            }
-            else return result.Errors.FirstOrDefault().Description;
-        }
 
         public async Task<string> EditRoleAsync(EditRoleRequest request)
         {
@@ -172,6 +160,60 @@ namespace CleanArchitecture.Service.Implementation
             }
 
         }
+
+        //Manage User Claims
+        public async Task<ManageUserClaimsResult> GetUserClaims(User user)
+        {
+            var response = new ManageUserClaimsResult();
+            response.UserId = user.Id;
+
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            foreach (var claim in ClaimStore.Claims)
+            {
+                UserClaim claim1 = new UserClaim(claim.Type);
+
+                if (userClaims.Any(x => x.Type == claim.Type))
+                {
+                    claim1.Value = true;
+                }
+                response.UserClaims.Add(claim1);
+            }
+
+            return response;
+        }
+
+        public async Task<string> UpdateUserClaims(UpdateUserClaimRequest request)
+        {
+            var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+
+            if (user == null)
+                return "UserNotFound";
+            var userOldClaims = await _userManager.GetClaimsAsync(user);
+            var transact = await _dBContext.Database.BeginTransactionAsync();
+            try
+            {
+
+
+                var removeClaims = await _userManager.RemoveClaimsAsync(user, userOldClaims);
+                if (!removeClaims.Succeeded)
+                {
+                    return "FailedToRemoveOldClaims";
+                }
+                var selectedClaims = request.UserClaims.Where(x => x.Value == true).Select(x => new Claim(x.Type, x.Value.ToString()));
+                var result = await _userManager.AddClaimsAsync(user, selectedClaims);
+                if (!result.Succeeded) return "FailedToAddNewClaims";
+
+                await transact.CommitAsync();
+                return "Success";
+
+            }
+            catch (Exception ex)
+            {
+                await transact.RollbackAsync();
+                return "FailedToUpdate";
+            }
+        }
+
         #endregion
 
     }
