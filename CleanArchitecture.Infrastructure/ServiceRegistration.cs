@@ -44,6 +44,10 @@ namespace CleanArchitecture.Infrastructure
                 option.User.RequireUniqueEmail = true;
                 option.SignIn.RequireConfirmedEmail = false;
             }).AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
+            //Emai
+            var emailSettings = new EmailSettings();
+            configuration.GetSection(nameof(emailSettings)).Bind(emailSettings);
+            services.AddSingleton(emailSettings);
 
             //JWT Authentication
             var jwtSettings = new JwtSettings();

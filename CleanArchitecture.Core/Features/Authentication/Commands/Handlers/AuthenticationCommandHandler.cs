@@ -53,6 +53,11 @@ namespace CleanArchitecture.Core.Features.Authentication.Commands.Handlers
                 return BadRequest<JwtAuthResult>(_stringLocalizer[SharedResourcesKeys.PasswordNotCorrect]);
 
             }
+            if (!user.EmailConfirmed)
+            {
+                return BadRequest<JwtAuthResult>(_stringLocalizer[SharedResourcesKeys.EmailNotConfirmed]);
+
+            }
             //Generate JWTToken
             var gwtResult = await _authenticationService.GetGWTToken(user);
             if (gwtResult == null)

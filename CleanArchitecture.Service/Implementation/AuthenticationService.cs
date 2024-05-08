@@ -4,6 +4,7 @@ using CleanArchitecture.Data.Results;
 using CleanArchitecture.Infrastructure.Abstracts;
 using CleanArchitecture.Service.Abstracts;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -19,6 +20,7 @@ namespace CleanArchitecture.Service.Implementation
         private readonly JwtSettings _jwtSettings;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly UserManager<User> _userManager;
+        private readonly IUrlHelper _urlHelper;
 
         //  private readonly ConcurrentDictionary<string, RefreshToken> _userRefreshToken;
 
@@ -27,11 +29,13 @@ namespace CleanArchitecture.Service.Implementation
         #region ctor
         public AuthenticationService(JwtSettings jwtSettings,
             IRefreshTokenRepository refreshTokenRepository,
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            IUrlHelper urlHelper)
         {
             _jwtSettings = jwtSettings;
             _refreshTokenRepository = refreshTokenRepository;
             _userManager = userManager;
+            _urlHelper = urlHelper;
             //  _userRefreshToken = new ConcurrentDictionary<string, RefreshToken>();
 
         }
@@ -215,6 +219,18 @@ namespace CleanArchitecture.Service.Implementation
                 return ("RefreshToken is expired", null);
             }
             return (userId, userRefreshToken.ExpiryDate);
+        }
+
+        public async Task<string> ConfirmEmail(int? userId, string? code)
+        {
+            if (userId == null || code == null)
+                return "InvalidData";
+
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var confirmEmail = await _userManager.ConfirmEmailAsync(user, code);
+            if (!confirmEmail.Succeeded)
+                return "ErrorWhenConfirmEmail";
+            return "Success";
         }
 
 

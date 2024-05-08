@@ -48,6 +48,7 @@
             public const string SignIn = $"{Prefix}/SignIn";
             public const string RefreshToken = $"{Prefix}/RefreshToken";
             public const string ValidateToken = $"{Prefix}/ValidateToken";
+            public const string ConfirmEmail = $"/Api/Authentication/ConfirmEmail";
 
         }
 
@@ -67,10 +68,12 @@
             public const string ManageUserCalims = $"{Claims}/ManageUserCalims/{{userId}}";
             public const string UpdateUserClaims = $"{Claims}/UpdateUserClaims";
 
+        }
 
-            //
-
-            //ValidateToken
+        public static class EmailRouting
+        {
+            public const string Prefix = $"{Rule}/Email";
+            public const string Send = $"{Prefix}/Send";
         }
     }
 }

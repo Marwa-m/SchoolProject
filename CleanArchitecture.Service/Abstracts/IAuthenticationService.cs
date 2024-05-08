@@ -11,5 +11,6 @@ namespace CleanArchitecture.Service.Abstracts
         public Task<JwtAuthResult> GetRefreshToken(User user, JwtSecurityToken jwtToken, string refreshToken, DateTime? expiryDate);
         public Task<string> ValidateToken(string accessToken);
         public Task<(string, DateTime?)> ValidateDetails(JwtSecurityToken jwtToken, string accessToken, string refreshToken);
+        public Task<string> ConfirmEmail(int? userId, string? code);
     }
 }
