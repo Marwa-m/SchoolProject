@@ -33,5 +33,12 @@ namespace CleanArchitecture.API.Controllers
             var response = await _mediator.Send(query);
             return NewResult(response);
         }
+
+        [HttpGet(LocalRouter.Authentication.ConfirmEmail)]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailQuery query)
+        {
+            var response = await _mediator.Send(query);
+            return NewResult(response);
+        }
     }
 }

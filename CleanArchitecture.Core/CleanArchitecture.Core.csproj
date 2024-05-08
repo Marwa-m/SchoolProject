@@ -31,9 +31,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Authentication\Queries\" />
     <Folder Include="Features\Departments\Commands\Handlers\" />
     <Folder Include="Features\Departments\Commands\Models\" />
+    <Folder Include="Features\Emails\Queries\" />
     <Folder Include="Features\Users\Queries\Handlers\" />
     <Folder Include="Features\Users\Queries\Models\" />
     <Folder Include="Mapping\DepartmentMapping\CommandMapping\" />
