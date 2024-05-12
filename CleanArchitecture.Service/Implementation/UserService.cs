@@ -57,10 +57,10 @@ namespace CleanArchitecture.Service.Implementation
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var requestAccessor = _httpContextAccessor.HttpContext.Request;
                 //var returnUrl = $"{requestAccessor.Scheme}://{requestAccessor.Host}/Api/V1/Authentication/ConfirmEmail?userId={user.Id}&code={code}";
-                var returnUrl = $"{requestAccessor.Scheme}://{requestAccessor.Host}";
-                returnUrl += _urlHelper.Action("ConfirmEmail", "Authentication", new { userId = user.Id, code = code });
+                var returnUrl = $"To Confirm Email, please click to the link: <a href=' {requestAccessor.Scheme}://{requestAccessor.Host}";
+                returnUrl += _urlHelper.Action("ConfirmEmail", "Authentication", new { userId = user.Id, code = code }) + "'></a>";
                 //Message body
-                var sendEmailResult = await _emailService.SendEmail(user.Email, returnUrl, "");
+                var sendEmailResult = await _emailService.SendEmail(user.Email, returnUrl, "Confirm Email");
                 if (sendEmailResult != "Success")
                 {
                     return "FailedSendEmail";

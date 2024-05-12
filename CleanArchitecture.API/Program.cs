@@ -1,4 +1,5 @@
 using CleanArchitecture.Core;
+using CleanArchitecture.Core.Filters;
 using CleanArchitecture.Core.MiddleWare;
 using CleanArchitecture.Data.Entities.Identity;
 using CleanArchitecture.Infrastructure;
@@ -74,6 +75,8 @@ builder.Services.AddScoped<IUrlHelper>(x =>
     var factory = x.GetRequiredService<IUrlHelperFactory>();
     return factory.GetUrlHelper(actionContext);
 });
+
+builder.Services.AddTransient<AuthFilter>();
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {

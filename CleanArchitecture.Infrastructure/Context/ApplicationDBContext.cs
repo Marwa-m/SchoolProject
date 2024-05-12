@@ -9,13 +9,14 @@ namespace CleanArchitecture.Infrastructure.Data
 {
     public class ApplicationDBContext : IdentityDbContext<User, Role, int, IdentityUserClaim<int>, IdentityUserRole<int>, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
+
         public ApplicationDBContext()
         {
 
         }
-        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
+        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options
+            ) : base(options)
         {
-
         }
 
         public DbSet<User> Users { get; set; }
@@ -34,7 +35,17 @@ namespace CleanArchitecture.Infrastructure.Data
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
+            //foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            //{
+            //    foreach (var property in entityType.GetProperties())
+            //    {
+            //        var attributes = property.PropertyInfo.GetCustomAttributes(typeof(EncryptedAttribute), false);
+            //        if (attributes.Any())
+            //        {
+            //            property.SetValueConverter(new EncryptedConverter());
+            //        }
+            //    }
+            //}
         }
 
     }
