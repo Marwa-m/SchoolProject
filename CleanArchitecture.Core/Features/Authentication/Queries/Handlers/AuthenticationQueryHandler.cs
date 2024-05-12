@@ -9,7 +9,8 @@ namespace CleanArchitecture.Core.Features.Authentication.Queries.Handlers
 {
     public class AuthenticationQueryHandler : ResponseHandler,
         IRequestHandler<AuthorizeUserQuery, Response<string>>,
-        IRequestHandler<ConfirmEmailQuery, Response<string>>
+        IRequestHandler<ConfirmEmailQuery, Response<string>>,
+            IRequestHandler<ConfirmResetPasswordQuery, Response<string>>
 
     {
 
@@ -50,8 +51,27 @@ namespace CleanArchitecture.Core.Features.Authentication.Queries.Handlers
                     return BadRequest<string>("InvalidData");
                 case "Success":
                     return Success(confirmEmail);
+                default:
+                    return BadRequest<string>(confirmEmail);
             }
-            throw new NotImplementedException();
+        }
+
+        public async Task<Response<string>> Handle(ConfirmResetPasswordQuery request, CancellationToken cancellationToken)
+        {
+            var result = await _authenticationService.ConfirmResetPassword(request.Email, request.Code);
+            switch (result)
+            {
+                case "UserNotFound":
+                    return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.UserIsNotFound]);
+                case "Failed":
+                    return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.InvaildCode]);
+                case "Success": return Success("");
+                default:
+                    return BadRequest<string>(result);
+
+
+
+            }
         }
         #endregion
 

@@ -49,6 +49,9 @@
             public const string RefreshToken = $"{Prefix}/RefreshToken";
             public const string ValidateToken = $"{Prefix}/ValidateToken";
             public const string ConfirmEmail = $"/Api/Authentication/ConfirmEmail";
+            public const string SendResetPassword = $"{Prefix}/SendResetPassword";
+            public const string ConfirmResetPassword = $"{Prefix}/ConfirmResetPassword";
+            public const string ResetPassword = $"{Prefix}/ResetPassword";
 
         }
 

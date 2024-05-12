@@ -2,6 +2,7 @@
 using CleanArchitecture.Data.Helper;
 using CleanArchitecture.Data.Results;
 using CleanArchitecture.Infrastructure.Abstracts;
+using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Service.Abstracts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,8 @@ namespace CleanArchitecture.Service.Implementation
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly UserManager<User> _userManager;
         private readonly IUrlHelper _urlHelper;
+        private readonly IEmailService _emailService;
+        private readonly ApplicationDBContext _dBContext;
 
         //  private readonly ConcurrentDictionary<string, RefreshToken> _userRefreshToken;
 
@@ -30,12 +33,16 @@ namespace CleanArchitecture.Service.Implementation
         public AuthenticationService(JwtSettings jwtSettings,
             IRefreshTokenRepository refreshTokenRepository,
             UserManager<User> userManager,
-            IUrlHelper urlHelper)
+            IUrlHelper urlHelper,
+            IEmailService emailService,
+            ApplicationDBContext dBContext)
         {
             _jwtSettings = jwtSettings;
             _refreshTokenRepository = refreshTokenRepository;
             _userManager = userManager;
             _urlHelper = urlHelper;
+            _emailService = emailService;
+            _dBContext = dBContext;
             //  _userRefreshToken = new ConcurrentDictionary<string, RefreshToken>();
 
         }
@@ -231,6 +238,71 @@ namespace CleanArchitecture.Service.Implementation
             if (!confirmEmail.Succeeded)
                 return "ErrorWhenConfirmEmail";
             return "Success";
+        }
+
+        public async Task<string> SendResetPasswordCode(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user == null)
+                return "UserNotFound";
+
+            Random generator = new Random();
+            string randomNumber = generator.Next(0, 1000000).ToString("D6");
+
+            user.Code = randomNumber;
+            var trans = await _dBContext.Database.BeginTransactionAsync();
+            try
+            {
+                var updateResult = await _userManager.UpdateAsync(user);
+                if (!updateResult.Succeeded)
+                    return "ErrorInUpdateUser";
+                var message = $"To reset password this is the code:{user.Code} ";
+                //var sendEmailResult = await _emailService.SendEmail(user.Email, message, "Reset Password");
+                //if (sendEmailResult != "Success")
+                //{
+                //    return "FailedSendEmail";
+                //}
+                await trans.CommitAsync();
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+                await trans.RollbackAsync();
+                return "Failed";
+            }
+        }
+
+        public async Task<string> ConfirmResetPassword(string email, string code)
+        {
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return "UserNotFound";
+
+            if (code == user.Code)
+                return "Success";
+            return "Failed";
+        }
+
+        public async Task<string> ResetPassword(string email, string password)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+                return "UserNotFound";
+            var trans = await _dBContext.Database.BeginTransactionAsync();
+            try
+            {
+                await _userManager.RemovePasswordAsync(user);
+                await _userManager.AddPasswordAsync(user, password);
+                await trans.CommitAsync();
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+                await trans.RollbackAsync();
+                return "Failed";
+            }
         }
 
 

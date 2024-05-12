@@ -1,6 +1,7 @@
 ﻿using CleanArchitecture.API.Base;
 using CleanArchitecture.Core.Features.Students.Commands.Models;
 using CleanArchitecture.Core.Features.Students.Queries.Models;
+using CleanArchitecture.Core.Filters;
 using CleanArchitecture.Data.AppMetaData;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -23,6 +24,8 @@ namespace CleanArchitecture.API.Controllers
             return Ok(response);
         }
         [HttpGet(LocalRouter.StudentRouting.List)]
+        [Authorize(Roles = "User")]
+        [ServiceFilter(typeof(AuthFilter))]
         public async Task<IActionResult> GetStudentList()
         {
             var response = await _mediator.Send(new GetStudentListQuery());

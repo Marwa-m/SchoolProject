@@ -26,7 +26,7 @@ namespace CleanArchitecture.Core.Features.Emails.Commands.Handlers
 
         public async Task<Response<string>> Handle(SendEmailCommand request, CancellationToken cancellationToken)
         {
-            var result = await _emailService.SendEmail(request.Email, request.Message, "reason");
+            var result = await _emailService.SendEmail(request.Email, request.Message, null);
             if (result == "Success")
             {
                 return Success("");
