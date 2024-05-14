@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Net;
 using System.Text.Json;
 
@@ -11,7 +12,8 @@ namespace CleanArchitecture.Core.MiddleWare
     {
         private readonly RequestDelegate _next;
 
-        public ErrorHandlerMiddleware(RequestDelegate next)
+        public ErrorHandlerMiddleware(RequestDelegate next
+            )
         {
             _next = next;
         }
@@ -27,6 +29,7 @@ namespace CleanArchitecture.Core.MiddleWare
                 var response = context.Response;
                 response.ContentType = "application/json";
                 var responseModel = new Response<string>() { Succeeded = false, Message = error?.Message };
+                Log.Error(error, "Error", context.Request, "");
                 //TODO:: cover all validation errors
                 switch (error)
                 {

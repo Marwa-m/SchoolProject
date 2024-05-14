@@ -7,6 +7,8 @@ namespace CleanArchitecture.Core.Mapping.DepartmentMapping
         public DepartmentProfile()
         {
             GetDepartmentByIdMapping();
+            GetDepartmentStudentListCountMappping();
+            GetDepartmentStudentCountByIdMapping();
         }
     }
 }

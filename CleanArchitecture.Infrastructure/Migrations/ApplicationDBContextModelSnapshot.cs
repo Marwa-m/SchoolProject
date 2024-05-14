@@ -243,6 +243,9 @@ namespace CleanArchitecture.Infrastructure.Migrations
                     b.Property<int>("DID")
                         .HasColumnType("int");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NameAr")
                         .HasColumnType("nvarchar(max)");
 
@@ -342,6 +345,23 @@ namespace CleanArchitecture.Infrastructure.Migrations
                     b.HasKey("SubID");
 
                     b.ToTable("Subjects");
+                });
+
+            modelBuilder.Entity("CleanArchitecture.Data.Entities.Views.ViewDepartment", b =>
+                {
+                    b.Property<int>("DID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DNameAr")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DNameEn")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StudentCount")
+                        .HasColumnType("int");
+
+                    b.ToTable("ViewDepartment");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
