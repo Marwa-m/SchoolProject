@@ -5,6 +5,7 @@ using CleanArchitecture.Core.Features.Departments.Queries.Results;
 using CleanArchitecture.Core.Resources;
 using CleanArchitecture.Core.Wrapper;
 using CleanArchitecture.Data.Entities;
+using CleanArchitecture.Data.Entities.Procedures;
 using CleanArchitecture.Service.Abstracts;
 using MediatR;
 using Microsoft.Extensions.Localization;
@@ -13,7 +14,9 @@ using System.Linq.Expressions;
 namespace CleanArchitecture.Core.Features.Departments.Queries.Handlers
 {
     public class DepartmentQueryHandler : ResponseHandler,
-        IRequestHandler<GetDepartmentByIdQuery, Response<GetDepartmentByIdResponse>>
+        IRequestHandler<GetDepartmentByIdQuery, Response<GetDepartmentByIdResponse>>,
+        IRequestHandler<GetDepartmentStudentListCountQuery, Response<List<GetDepartmentStudentListCountResult>>>,
+        IRequestHandler<GetDepartmentStudentCountByIdQuery, Response<GetDepartmentStudentCountByIdResult>>
     {
 
         #region Fields
@@ -52,6 +55,23 @@ namespace CleanArchitecture.Core.Features.Departments.Queries.Handlers
             departmentMapper.StudentList = paginatedList;
 
             return (Success(departmentMapper));
+        }
+
+        public async Task<Response<List<GetDepartmentStudentListCountResult>>> Handle(GetDepartmentStudentListCountQuery request, CancellationToken cancellationToken)
+        {
+            var result = await _departmentService.GetViewDepartmentDataAsync();
+            var mapper = _mapper.Map<List<GetDepartmentStudentListCountResult>>(result);
+            return Success(mapper);
+
+        }
+
+        public async Task<Response<GetDepartmentStudentCountByIdResult>> Handle(GetDepartmentStudentCountByIdQuery request, CancellationToken cancellationToken)
+        {
+            var param = _mapper.Map<DepartmentStudentCountProcParams>(request);
+            var procResult = await _departmentService.GetDepartmentStudentCountProc(param);
+            var result = _mapper.Map<GetDepartmentStudentCountByIdResult>(procResult.FirstOrDefault());
+            return Success(result);
+
         }
         #endregion
 

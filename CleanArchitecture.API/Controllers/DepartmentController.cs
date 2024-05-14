@@ -20,5 +20,18 @@ namespace CleanArchitecture.API.Controllers
             var response = await _mediator.Send(query);
             return NewResult(response);
         }
+
+        [HttpGet(LocalRouter.DepartmentRouting.GetDepartmentStudentCount)]
+        public async Task<IActionResult> GetDepartmentStudentCount()
+        {
+            var response = await _mediator.Send(new GetDepartmentStudentListCountQuery());
+            return NewResult(response);
+        }
+        [HttpGet(LocalRouter.DepartmentRouting.GetDepartmentStudentCountById)]
+        public async Task<IActionResult> GetDepartmentStudentCountById([FromRoute] int Id)
+        {
+            var response = await _mediator.Send(new GetDepartmentStudentCountByIdQuery() { DID = Id });
+            return NewResult(response);
+        }
     }
 }

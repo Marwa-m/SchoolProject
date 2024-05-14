@@ -19,6 +19,8 @@ namespace CleanArchitecture.Service
             services.AddTransient<IUserService, UserService>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddTransient<ICurrentUserService, CurrentUserService>();
+            services.AddTransient<IInstructroService, InstrucotrService>();
+            services.AddTransient<IFileService, FileService>();
 
             return services;
         }

@@ -25,6 +25,11 @@
             public const string Prefix = $"{Rule}/Department";
 
             public const string GetByID = $"{Prefix}/Id";
+            public const string GetDepartmentStudentCount = $"{Prefix}/GetDepartmentStudentCount";
+
+            public const string GetDepartmentStudentCountById = $"{Prefix}/GetDepartmentStudentCountById/{{Id}}";
+
+
         }
 
         public static class UserRouting
@@ -78,5 +83,14 @@
             public const string Prefix = $"{Rule}/Email";
             public const string Send = $"{Prefix}/Send";
         }
+        public static class InstructorRouting
+        {
+            public const string Prefix = $"{Rule}/Instructor";
+            public const string GetSalarySummation = $"{Prefix}/GetSalarySummation";
+            public const string AddInstructor = $"{Prefix}/Create";
+
+
+        }
+
     }
 }

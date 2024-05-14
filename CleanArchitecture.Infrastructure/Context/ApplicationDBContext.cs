@@ -1,5 +1,6 @@
 ﻿using CleanArchitecture.Data.Entities;
 using CleanArchitecture.Data.Entities.Identity;
+using CleanArchitecture.Data.Entities.Views;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,11 @@ namespace CleanArchitecture.Infrastructure.Data
         public DbSet<Ins_Subject> Ins_Subjects { get; set; }
         public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
 
+        #region Views
+        public DbSet<ViewDepartment> ViewDepartment { get; set; }
+
+
+        #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

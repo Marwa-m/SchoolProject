@@ -24,7 +24,7 @@ namespace CleanArchitecture.Data.Entities
 
         public int? SupervisorID { get; set; }
         public double? Salary { get; set; }
-
+        public string? Image { get; set; }
         public int DID { get; set; }
 
         [ForeignKey(nameof(Department.DID))]
